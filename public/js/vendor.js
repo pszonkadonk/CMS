@@ -10275,6 +10275,12 @@ return jQuery;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.Popper = factory());
+}(this, (function () { 'use strict';
+
 var nativeHints = ['native code', '[object MutationObserverConstructor]'];
 
 /**
@@ -12204,7 +12210,7 @@ var modifiers = {
    * Modifier used to prevent the popper from being positioned outside the boundary.
    *
    * An scenario exists where the reference itself is not within the boundaries.<br />
-   * We can say it has "escaped the boundaries" â€” or just "escaped".<br />
+   * We can say it has "escaped the boundaries" — or just "escaped".<br />
    * In this case we need to decide whether the popper should either:
    *
    * - detach from the reference and remain "trapped" in the boundaries, or
@@ -12679,7 +12685,9 @@ Popper.Utils = (typeof window !== 'undefined' ? window : global).PopperUtils;
 Popper.placements = placements;
 Popper.Defaults = Defaults;
 
-export default Popper;
+return Popper;
+
+})));
 //# sourceMappingURL=popper.js.map
 /*!
  * Bootstrap v4.0.0-beta (https://getbootstrap.com)
