@@ -9,7 +9,7 @@ const babel = require("gulp-babel");
 const cssFiles = "./public/css/source/**/*.css"
 const sassFiles = "./public/css/source/sass/*.sass"
 const jsxFiles = ["./app_source/components/**/*.js","./app_source/initializer.js"]
-const vendorFiles = ["./public/js/vendor/jquery.min.js", "./public/js/vendor/bootstrap.min.js","./public/js/vendor/popper.min.js", "./public/js/vendor/react.min.js", "./public/js/vendor/react-dom.min.js"];
+const vendorFiles = ["./public/js/vendor/jquery.js", "./public/js/vendor/popper.js", "./public/js/vendor/bootstrap.js", "./public/js/vendor/react.js", "./public/js/vendor/react-dom.js"];
 
 
 gulp.task("sass", () => {
@@ -46,7 +46,7 @@ gulp.task("jsx", () => {
 gulp.task("vendor", () => {
     return gulp
         .src(vendorFiles)
-        .pipe(concatenate("vendor.min.js")) //concatenate all vendor js files into one
+        .pipe(concatenate("vendor.js")) //concatenate all vendor js files into one
         .pipe(gulp.dest("./public/js/"));
 });
 
