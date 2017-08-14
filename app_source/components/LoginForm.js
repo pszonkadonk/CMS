@@ -15,12 +15,6 @@ class LoginForm extends React.Component {
                                 <label for="password">Password</label>
                                 <input type="password" className="form-control" id="password" placeholder="Password" />
                             </div>
-                            <div className="form-check">
-                                <label className="form-check-label">
-                                <input type="checkbox" className="form-check-input" />
-                                Log In
-                                </label>
-                            </div>
                             <button type="submit" className="btn btn-primary">Submit</button> 
                         </form>
                     </div>

@@ -21,12 +21,15 @@ let exportedMethods = {
             });
         });
     },
-    addUser(username, password) {
+    addUser(username, password, administrator) {
         if(username === '' || typeof(username) === 'undefined') {
             throw("Username invalid");
         }
         else if(password === '' || typeof(password) === 'undefined') {
             throw('You must provide a valid password');
+        }
+        else if(password == '' || typeof(administrator) == 'undefined') {
+            throw('You must specify if you would like to be an administrator');
         }
         return users().then((userCollection) => {
             return userCollection.findOne({username: username}).then((user) => {
@@ -38,6 +41,7 @@ let exportedMethods = {
                         _id: uuid.v4(),
                         username: username,
                         hashedPassword: hash,
+                        administrator: administrator
                     };
                     return userCollection.insertOne(newUser).then((insertedInfo) => {
                         return insertedInfo.insertedId;

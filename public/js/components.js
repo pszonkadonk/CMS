@@ -63,16 +63,6 @@ var LoginForm = function (_React$Component) {
                                 React.createElement("input", { type: "password", className: "form-control", id: "password", placeholder: "Password" })
                             ),
                             React.createElement(
-                                "div",
-                                { className: "form-check" },
-                                React.createElement(
-                                    "label",
-                                    { className: "form-check-label" },
-                                    React.createElement("input", { type: "checkbox", className: "form-check-input" }),
-                                    "Log In"
-                                )
-                            ),
-                            React.createElement(
                                 "button",
                                 { type: "submit", className: "btn btn-primary" },
                                 "Submit"
@@ -159,67 +149,113 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var SignupForm = function (_React$Component) {
     _inherits(SignupForm, _React$Component);
 
-    function SignupForm() {
+    function SignupForm(props) {
         _classCallCheck(this, SignupForm);
 
-        return _possibleConstructorReturn(this, (SignupForm.__proto__ || Object.getPrototypeOf(SignupForm)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (SignupForm.__proto__ || Object.getPrototypeOf(SignupForm)).call(this, props));
+
+        _this.state = {
+            username: "",
+            password: "",
+            administrator: false
+        };
+        _this.handleUsernameChange = _this.handleUsernameChange.bind(_this);
+        _this.handlePasswordChange = _this.handlePasswordChange.bind(_this);
+        _this.handleAdministrator = _this.handleAdministrator.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
+
+        return _this;
     }
 
     _createClass(SignupForm, [{
+        key: "handleUsernameChange",
+        value: function handleUsernameChange(event) {
+            this.setState({
+                username: event.target.value
+            });
+        }
+    }, {
+        key: "handlePasswordChange",
+        value: function handlePasswordChange(event) {
+            this.setState({
+                password: event.target.value
+            });
+        }
+    }, {
+        key: "handleAdministrator",
+        value: function handleAdministrator(event) {
+            this.setState({
+                administrator: !this.state.administrator //flip administrator on each click
+            });
+        }
+    }, {
+        key: "handleSubmit",
+        value: function handleSubmit(event) {
+            alert("Adminstrator is currently " + this.state.administrator);
+            event.preventDefault();
+        }
+    }, {
         key: "render",
         value: function render() {
             return React.createElement(
-                "form",
-                null,
+                "div",
+                { className: "container" },
                 React.createElement(
                     "div",
-                    { "class": "form-group" },
+                    { className: "row" },
                     React.createElement(
-                        "label",
-                        { "for": "username" },
-                        "Username"
-                    ),
-                    React.createElement("input", { type: "username", "class": "form-control", id: "username", "aria-describedby": "usernameHelp", placeholder: "Enter username" }),
-                    React.createElement(
-                        "small",
-                        { id: "usernameHelp", "class": "form-text text-muted" },
-                        "We'll never share your username with anyone else."
+                        "div",
+                        { className: "col-md-6 offset-md-3" },
+                        React.createElement(
+                            "h1",
+                            null,
+                            "Sign Up"
+                        ),
+                        React.createElement(
+                            "form",
+                            { onSubmit: this.handleSubmit },
+                            React.createElement(
+                                "div",
+                                { className: "form-group" },
+                                React.createElement(
+                                    "label",
+                                    { "for": "username" },
+                                    "Username"
+                                ),
+                                React.createElement("input", { type: "username", className: "form-control", id: "username", "aria-describedby": "usernameHelp", placeholder: "Enter username", value: this.state.username, onChange: this.handleUsernameChange }),
+                                React.createElement(
+                                    "small",
+                                    { id: "usernameHelp", className: "form-text text-muted" },
+                                    "We'll never share your username with anyone else."
+                                )
+                            ),
+                            React.createElement(
+                                "div",
+                                { className: "form-group" },
+                                React.createElement(
+                                    "label",
+                                    { "for": "password" },
+                                    "Password"
+                                ),
+                                React.createElement("input", { type: "password", className: "form-control", id: "password", placeholder: "Password", value: this.state.password, onChange: this.handlePasswordChange })
+                            ),
+                            React.createElement(
+                                "div",
+                                { className: "form-check" },
+                                React.createElement(
+                                    "label",
+                                    { className: "form-check-label" },
+                                    React.createElement("input", { type: "checkbox", className: "form-check-input", onChange: this.handleAdministrator }),
+                                    "Administrator Rights?"
+                                )
+                            ),
+                            React.createElement(
+                                "button",
+                                { type: "submit", className: "btn btn-primary" },
+                                "Submit"
+                            )
+                        )
                     )
-                ),
-                React.createElement(
-                    "div",
-                    { "class": "form-group" },
-                    React.createElement(
-                        "label",
-                        { "for": "password" },
-                        "Password"
-                    ),
-                    React.createElement("input", { type: "password", "class": "form-control", id: "password", placeholder: "Password" })
-                ),
-                React.createElement(
-                    "div",
-                    { "class": "form-group" },
-                    React.createElement(
-                        "label",
-                        { "for": "passwordConfirmation" },
-                        "Password"
-                    ),
-                    React.createElement("input", { type: "passwordConfirmation", "class": "form-control", id: "passwordConfirmation", placeholder: "Password Confirmation" })
-                ),
-                React.createElement(
-                    "div",
-                    { "class": "form-check" },
-                    React.createElement(
-                        "label",
-                        { "class": "form-check-label" },
-                        React.createElement("input", { type: "checkbox", "class": "form-check-input" }),
-                        "Sign Up"
-                    )
-                ),
-                React.createElement(
-                    "button",
-                    { type: "submit", "class": "btn btn-primary" },
-                    "Submit"
                 )
             );
         }
@@ -232,4 +268,5 @@ var SignupForm = function (_React$Component) {
 'use strict';
 
 ReactDOM.render(React.createElement(NavComponent, null), document.getElementById('navbar'));
-ReactDOM.render(React.createElement(LoginForm, null), document.getElementById('app'));
+// ReactDOM.render(<LoginForm />, document.getElementById('app'));
+ReactDOM.render(React.createElement(SignupForm, null), document.getElementById('app'));
