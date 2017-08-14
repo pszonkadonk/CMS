@@ -1,8 +1,7 @@
-var passport = require('passport');
-var Strategy = require('passport-local').Strategy;
+const passport = require('passport');
+const Strategy = require('passport-local').Strategy;
 const data = require('../data'); 
 const bcrypt = require("bcrypt-nodejs");
-var flash = require('connect-flash');
 
 
 module.exports = (passport, Strategy) => {
@@ -13,12 +12,14 @@ module.exports = (passport, Strategy) => {
     // that the password is correct and then invoke `cb` with a user object, which
     // will be set at `req.user` in route handlers after authentication.
     passport.use(new Strategy(
-    function (username, password, cb) {
+    (username, password, cb) => {
         data.users.getUserByUsername(username).then((user) => {
         bcrypt.compare(password, user.hashedPassword, (err, res) => {
             if (res != true) {
-            return cb(null, false);
+                console.log("looks like I failed authentication");
+                return cb(null, false);
             }
+            console.log("It looks like I was authenticated");
             return cb(null, user);
         });
         }, (err) => { console.log(err); return cb(null, false); })
@@ -33,11 +34,11 @@ module.exports = (passport, Strategy) => {
     // typical implementation of this is as simple as supplying the user ID when
     // serializing, and querying the user record by ID from the database when
     // deserializing.
-    passport.serializeUser(function (user, cb) {
+    passport.serializeUser((user, cb) => {
     cb(null, user._id);
     });
 
-    passport.deserializeUser(function (id, cb) {
+    passport.deserializeUser((id, cb) => {
 
         data.users.getUserById(id).then((user) => {
             cb(null, user);

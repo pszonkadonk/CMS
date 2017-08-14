@@ -11,13 +11,51 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var LoginForm = function (_React$Component) {
     _inherits(LoginForm, _React$Component);
 
-    function LoginForm() {
+    function LoginForm(props) {
         _classCallCheck(this, LoginForm);
 
-        return _possibleConstructorReturn(this, (LoginForm.__proto__ || Object.getPrototypeOf(LoginForm)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (LoginForm.__proto__ || Object.getPrototypeOf(LoginForm)).call(this, props));
+
+        _this.state = {
+            username: "",
+            password: ""
+        };
+        _this.handleUsernameChange = _this.handleUsernameChange.bind(_this);
+        _this.handlePasswordChange = _this.handlePasswordChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
+        return _this;
     }
 
     _createClass(LoginForm, [{
+        key: "handleUsernameChange",
+        value: function handleUsernameChange(event) {
+            this.setState({
+                username: event.target.value
+            });
+        }
+    }, {
+        key: "handlePasswordChange",
+        value: function handlePasswordChange(event) {
+            this.setState({
+                password: event.target.value
+            });
+        }
+    }, {
+        key: "handleSubmit",
+        value: function handleSubmit(event) {
+            if (this.state.username === '' || this.state.password === '') {
+                alert("You must provide a valid username and password");
+                return false;
+            }
+
+            var loginPayLoad = {
+                username: this.state.username,
+                password: this.state.password
+            };
+
+            $.post("/login", loginPayLoad);
+        }
+    }, {
         key: "render",
         value: function render() {
             return React.createElement(
@@ -36,7 +74,7 @@ var LoginForm = function (_React$Component) {
                         ),
                         React.createElement(
                             "form",
-                            null,
+                            { onSubmit: this.handleSubmit },
                             React.createElement(
                                 "div",
                                 { className: "form-group" },
@@ -45,12 +83,7 @@ var LoginForm = function (_React$Component) {
                                     { "for": "username" },
                                     "Username"
                                 ),
-                                React.createElement("input", { type: "username", className: "form-control", id: "username", "aria-describedby": "usernameHelp", placeholder: "Enter username" }),
-                                React.createElement(
-                                    "small",
-                                    { id: "usernameHelp", className: "form-text text-muted" },
-                                    "We'll never share your username with anyone else."
-                                )
+                                React.createElement("input", { type: "username", className: "form-control", id: "username", "aria-describedby": "usernameHelp", placeholder: "Enter username", value: this.state.username, onChange: this.handleUsernameChange })
                             ),
                             React.createElement(
                                 "div",
@@ -60,7 +93,7 @@ var LoginForm = function (_React$Component) {
                                     { "for": "password" },
                                     "Password"
                                 ),
-                                React.createElement("input", { type: "password", className: "form-control", id: "password", placeholder: "Password" })
+                                React.createElement("input", { type: "password", className: "form-control", id: "password", placeholder: "Password", value: this.state.password, onChange: this.handlePasswordChange })
                             ),
                             React.createElement(
                                 "button",
@@ -157,10 +190,12 @@ var SignupForm = function (_React$Component) {
         _this.state = {
             username: "",
             password: "",
+            passwordConfirmation: "",
             administrator: false
         };
         _this.handleUsernameChange = _this.handleUsernameChange.bind(_this);
         _this.handlePasswordChange = _this.handlePasswordChange.bind(_this);
+        _this.handlePasswordConfirmationChange = _this.handlePasswordConfirmationChange.bind(_this);
         _this.handleAdministrator = _this.handleAdministrator.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
 
@@ -182,6 +217,13 @@ var SignupForm = function (_React$Component) {
             });
         }
     }, {
+        key: "handlePasswordConfirmationChange",
+        value: function handlePasswordConfirmationChange(event) {
+            this.setState({
+                passwordConfirmation: event.target.value
+            });
+        }
+    }, {
         key: "handleAdministrator",
         value: function handleAdministrator(event) {
             this.setState({
@@ -191,8 +233,21 @@ var SignupForm = function (_React$Component) {
     }, {
         key: "handleSubmit",
         value: function handleSubmit(event) {
-            alert("Adminstrator is currently " + this.state.administrator);
-            event.preventDefault();
+            if (this.state.username === '' || this.state.password === '') {
+                alert("You must provide a valid username and password");
+                return false;
+            } else if (this.state.password !== this.state.passwordConfirmation) {
+                alert("Your passwords do not match");
+                return false;
+            }
+
+            var signupPayLoad = {
+                username: this.state.username,
+                password: this.state.password,
+                administrator: this.state.administrator
+            };
+
+            $.post("/register", signupPayLoad);
         }
     }, {
         key: "render",
@@ -222,12 +277,7 @@ var SignupForm = function (_React$Component) {
                                     { "for": "username" },
                                     "Username"
                                 ),
-                                React.createElement("input", { type: "username", className: "form-control", id: "username", "aria-describedby": "usernameHelp", placeholder: "Enter username", value: this.state.username, onChange: this.handleUsernameChange }),
-                                React.createElement(
-                                    "small",
-                                    { id: "usernameHelp", className: "form-text text-muted" },
-                                    "We'll never share your username with anyone else."
-                                )
+                                React.createElement("input", { type: "username", className: "form-control", id: "username", "aria-describedby": "usernameHelp", placeholder: "Enter username", value: this.state.username, onChange: this.handleUsernameChange })
                             ),
                             React.createElement(
                                 "div",
@@ -238,6 +288,16 @@ var SignupForm = function (_React$Component) {
                                     "Password"
                                 ),
                                 React.createElement("input", { type: "password", className: "form-control", id: "password", placeholder: "Password", value: this.state.password, onChange: this.handlePasswordChange })
+                            ),
+                            React.createElement(
+                                "div",
+                                { className: "form-group" },
+                                React.createElement(
+                                    "label",
+                                    { "for": "passwordConfirmation" },
+                                    "Password Confirmation"
+                                ),
+                                React.createElement("input", { type: "password", className: "form-control", id: "passwordConfirmation", placeholder: "Password Confirmation", value: this.state.passwordConfirmation, onChange: this.handlePasswordConfirmationChange })
                             ),
                             React.createElement(
                                 "div",
@@ -268,5 +328,5 @@ var SignupForm = function (_React$Component) {
 'use strict';
 
 ReactDOM.render(React.createElement(NavComponent, null), document.getElementById('navbar'));
-// ReactDOM.render(<LoginForm />, document.getElementById('app'));
-ReactDOM.render(React.createElement(SignupForm, null), document.getElementById('app'));
+ReactDOM.render(React.createElement(LoginForm, null), document.getElementById('app'));
+// ReactDOM.render(<SignupForm />, document.getElementById('app'));

@@ -1,6 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const uuid = require("uuid");
+const bcrpyt = require("bcrypt-nodejs");
 
 let exportedMethods = {
         getAllUsers() {
@@ -18,6 +19,19 @@ let exportedMethods = {
                     throw "Sorry, user not found";
                 }
                 return user;
+            });
+        });
+    },
+    getUserByUsername(username) {
+        if(username === '' || typeof(username) === 'undefined') {
+            throw("You have passed an invalid username");
+        }
+        return users().then((userCollection) => {
+            return userCollection.findOne({username: username}).then((user) => {
+            if(!user) {
+                throw "Sorry, could not find user with that username";
+            }
+            return user;
             });
         });
     },

@@ -13,7 +13,6 @@ const vendorFiles = ["./public/js/vendor/jquery.js", "./public/js/vendor/popper.
 
 
 gulp.task("sass", () => {
-    console.log("I ran")
     gulp
         .src(sassFiles)
         .pipe(gulpSASS())

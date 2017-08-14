@@ -1,7 +1,12 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const static = express.static(__dirname + '/public');
+const static = express.static(__dirname + "/public");
+const passport = require("passport");
+const Strategy = require("passport-local").Strategy;
+const flash = require("connect-flash");
+
+
 
 const configRoutes = require("./routes");
 
@@ -31,6 +36,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+app.use(flash())
 
 configRoutes(app);
 

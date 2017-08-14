@@ -4,10 +4,12 @@ class SignupForm extends React.Component {
         this.state = {
             username: "",
             password: "",
+            passwordConfirmation: "",
             administrator: false
         }        
         this.handleUsernameChange= this.handleUsernameChange.bind(this);
         this.handlePasswordChange= this.handlePasswordChange.bind(this);
+        this.handlePasswordConfirmationChange= this.handlePasswordConfirmationChange.bind(this);
         this.handleAdministrator = this.handleAdministrator.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         
@@ -23,6 +25,12 @@ class SignupForm extends React.Component {
             password: event.target.value
         });
     }
+    handlePasswordConfirmationChange(event) {
+        this.setState({
+            passwordConfirmation: event.target.value
+        });
+    }
+
     handleAdministrator(event) {
         this.setState({
             administrator: !this.state.administrator //flip administrator on each click
@@ -30,8 +38,22 @@ class SignupForm extends React.Component {
     }
 
     handleSubmit(event) {
-        alert("Adminstrator is currently " + this.state.administrator);
-        event.preventDefault();
+        if(this.state.username === '' || this.state.password === '') {
+            alert("You must provide a valid username and password");
+            return false;
+        }
+        else if(this.state.password !== this.state.passwordConfirmation) {
+            alert("Your passwords do not match");
+            return false;
+        }
+
+        const signupPayLoad = {
+            username: this.state.username,
+            password: this.state.password,
+            administrator: this.state.administrator
+        }
+        
+        $.post("/register", signupPayLoad);
     }
 
     render() {
@@ -44,11 +66,14 @@ class SignupForm extends React.Component {
                             <div className="form-group">
                                 <label for="username">Username</label>
                                 <input type="username" className="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter username" value={this.state.username} onChange={this.handleUsernameChange} />
-                                <small id="usernameHelp" className="form-text text-muted">We'll never share your username with anyone else.</small>
                             </div>
                             <div className="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" className="form-control" id="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}  />
+                            </div>
+                           <div className="form-group">
+                                <label for="passwordConfirmation">Password Confirmation</label>
+                                <input type="password" className="form-control" id="passwordConfirmation" placeholder="Password Confirmation" value={this.state.passwordConfirmation} onChange={this.handlePasswordConfirmationChange}  />
                             </div>
                             <div className="form-check">
                                 <label className="form-check-label">
